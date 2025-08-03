@@ -1,1 +1,144 @@
-# nexus-tesla-alexa
+# NEXUS AI - Control Your Tesla from Alexa
+
+NEXUS allows you to control your Tesla using Alexa voice commands by leveraging the Tesla JSON API and AWS Lambda.
+
+---
+
+## Features
+- Lock/unlock your Tesla
+- Start/stop your Tesla
+- Query vehicle status
+- Fully voice-controlled through Alexa
+
+---
+
+## Prerequisites
+
+- **Node.js** (version 20 or higher recommended)
+- **AWS Account**
+- **Amazon Developer Account**
+- **AWS CLI** installed and configured on your local machine
+
+---
+
+## Installation & Setup
+
+### 1. Download and Install Dependencies
+
+- Download the latest release from the [Releases](https://github.com/your-repo/nexus-ai/releases) page.
+- Unzip the archive to your preferred location.
+- Open a terminal in that folder and run:
+
+```bash
+npm install
+````
+
+### 2. Create AWS Lambda Function
+
+* Log into the [AWS Lambda Console](https://console.aws.amazon.com/lambda/).
+* Create a new Lambda function:
+
+  * Blueprint: **Blank Function**
+  * Trigger: **Alexa Skills Kit**
+  * Name: `TeslaControl`
+  * Runtime: **Node 4.3** (verify if newer runtimes are supported)
+* Leave the default code in place for now.
+
+### 3. Configure Environment Variables for Lambda
+
+Set the following environment variables in your Lambda function:
+
+| Variable              | Description                 |
+| --------------------- | --------------------------- |
+| `TESLA_EMAIL`         | Your Tesla account email    |
+| `TESLA_PASS`          | Your Tesla account password |
+| `TESLA_VIN`           | Your Tesla vehicle VIN      |
+| `TESLA_CLIENT_ID`     | Tesla API Client ID         |
+| `TESLA_CLIENT_SECRET` | Tesla API Client Secret     |
+
+### 4. Configure IAM Role and Permissions
+
+* Create a new IAM role named `TeslaControl`.
+* Assign the **Simple Microservice** permission template.
+* Edit the attached policy and modify the `"Action"` array to:
+
+```json
+"Action": [
+  "dynamodb:*"
+]
+```
+
+* Save and validate the policy.
+
+### 5. Create Alexa Skill
+
+* Go to the [Amazon Developer Console](https://developer.amazon.com/alexa/console/ask).
+* Create a new skill with:
+
+  * **Custom Interaction Model**
+  * Invocation name: `"my car"` (recommended) or `"my Tesla"`
+* In the Interaction Model:
+
+  * Copy `intents.json` into the Intent Schema.
+  * Copy `utterances.txt` into Sample Utterances.
+  * Create two custom slot types:
+
+    * `LOCK_UNLOCK` with values: `lock`, `unlock`
+    * `START_STOP` with values: `start`, `stop`
+
+### 6. Connect Alexa Skill to Lambda
+
+* On the Configuration tab:
+
+  * Choose **AWS Lambda ARN** as the Service Endpoint Type.
+  * Region: **North America**
+  * Enter your Lambda ARN.
+
+* Enable testing in the Test tab.
+
+* Copy the Skill ID (starts with `amzn1.ask.skill.`).
+
+### 7. Add `APP_ID` to Lambda Environment Variables
+
+Add the following environment variable to your Lambda function:
+
+* `APP_ID` = *Your Alexa Skill ID*
+
+### 8. Deploy Lambda Function Code
+
+From your terminal, run:
+
+```bash
+npm run lambda
+```
+
+This will upload your code to the Lambda function.
+
+---
+
+## Testing
+
+Once deployed and connected, test your Alexa skill with commands like:
+
+* "Alexa, tell my car to log in"
+* "Alexa, tell my car to get vehicle"
+
+---
+
+## Contributing
+
+PRs to automate setup and improve functionality are welcome!
+
+---
+
+## License
+
+[MIT](LICENSE)
+
+---
+
+## Acknowledgements
+
+* Tesla JSON API
+* AWS Lambda
+* Amazon Alexa Skills Kit
