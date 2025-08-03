@@ -1,147 +1,83 @@
-# NEXUS AI - Control Your Tesla from Alexa
+# NEXUS Tesla & Blockchain Control
 
-NEXUS allows you to control your Tesla using Alexa voice commands by leveraging the Tesla JSON API and AWS Lambda.
-
----
-
-## Features
-
-- Lock/unlock your Tesla
-- Start/stop your Tesla
-- Query vehicle status
-- Fully voice-controlled through Alexa
+NEXUS is a powerful platform combining Tesla vehicle management with blockchain-powered $BARK token control, enhanced by AI and Alexa voice integration.
 
 ---
 
-## Prerequisites
+## 🚀 Features
 
-- Node.js (version 20 or higher recommended)
-- AWS Account
-- Amazon Developer Account
-- AWS CLI installed and configured on your local machine
+- Tesla API integration for remote vehicle controls  
+- Solana blockchain support for $BARK token transfers and staking  
+- AI-powered vehicle status monitoring and token logistics  
+- Alexa voice commands for hands-free Tesla control and blockchain transactions
 
 ---
 
-## Installation & Setup
+## 🛠️ Installation & Setup
 
-### 1. Download and Install Dependencies
-
-- Download the latest release from the Releases page.
-- Unzip the archive to your preferred location.
-- Open a terminal in that folder and run:
-
-```bash
-npm install
+1. Clone the repo  
+2. Install dependencies  
+   ```bash
+   npm install
 ````
 
-### 2. Create AWS Lambda Function
+3. Set environment variables:
 
-* Log into the [AWS Lambda Console](https://console.aws.amazon.com/lambda/).
-* Create a new Lambda function with:
+   * Tesla API keys
+   * Solana wallet keys
+   * AWS Lambda / Alexa Skill credentials
+4. Run the development server:
 
-  * Blueprint: **Blank Function**
-  * Trigger: **Alexa Skills Kit**
-  * Name: `TeslaControl`
-  * Runtime: Node 4.3 (check for newer supported runtimes, ideally Node 20+)
-* Leave the default code in place for now.
-
-### 3. Configure Environment Variables for Lambda
-
-In your Lambda function settings, add these environment variables:
-
-| Variable              | Description                 |
-| --------------------- | --------------------------- |
-| `TESLA_EMAIL`         | Your Tesla account email    |
-| `TESLA_PASS`          | Your Tesla account password |
-| `TESLA_VIN`           | Your Tesla vehicle VIN      |
-| `TESLA_CLIENT_ID`     | Tesla API Client ID         |
-| `TESLA_CLIENT_SECRET` | Tesla API Client Secret     |
-
-### 4. Configure IAM Role and Permissions
-
-* Create a new IAM role named `TeslaControl`.
-* Assign the **Simple Microservice** permission template.
-* Edit the attached policy and modify the `"Action"` array to:
-
-```json
-"Action": [
-  "dynamodb:*"
-]
-```
-
-* Save and validate the policy.
-
-### 5. Create Alexa Skill
-
-* Go to the [Amazon Developer Console](https://developer.amazon.com/alexa/console/ask).
-* Create a new skill:
-
-  * Skill type: **Custom Interaction Model**
-  * Invocation name: `"my car"` (recommended) or `"my Tesla"`
-* In the Interaction Model:
-
-  * Copy `intents.json` into the **Intent Schema**.
-  * Copy `utterances.txt` into **Sample Utterances**.
-* Create two custom slot types:
-
-  * `LOCK_UNLOCK` with values: `lock`, `unlock`
-  * `START_STOP` with values: `start`, `stop`
-
-### 6. Connect Alexa Skill to Lambda
-
-* On the Alexa skill Configuration tab:
-
-  * Choose **AWS Lambda ARN** as the Service Endpoint Type.
-  * Region: **North America**
-  * Enter your Lambda ARN.
-* Enable testing in the **Test** tab.
-* Copy the Skill ID (starts with `amzn1.ask.skill.`).
-
-### 7. Add APP\_ID to Lambda Environment Variables
-
-* Add the following environment variable to your Lambda function:
-
-```
-APP_ID = Your Alexa Skill ID
-```
-
-### 8. Deploy Lambda Function Code
-
-From your terminal, run:
-
-```bash
-npm run lambda
-```
-
-This will upload your code to the Lambda function.
+   ```bash
+   npm run dev
+   ```
 
 ---
 
-## Testing
+## 🤖 AI & Alexa Integration
 
-Once deployed and connected, test your Alexa skill with commands like:
+### Tesla Control via Alexa
 
-* "Alexa, tell my car to log in"
-* "Alexa, tell my car to get vehicle"
+Control your Tesla hands-free using Alexa voice commands linked via AWS Lambda.
+
+**Sample Commands:**
+
+* "Alexa, ask my car to lock the doors."
+* "Alexa, ask my car to start the engine."
+* "Alexa, ask my car for battery status."
+
+### Blockchain Transactions via Alexa
+
+Send \$BARK tokens securely via voice:
+
+* **Send Tokens:**
+  "Alexa, send 10 BARK tokens to wallet address **\<wallet\_address>**."
+
+* **Check Balance:**
+  "Alexa, what's my BARK token balance?"
+
+### Example Alexa Transaction Command
+
+```plaintext
+User: Alexa, send 5 BARK tokens to 9x9v3sFVG89...4XUwZ  
+Alexa: Sending 5 BARK tokens to 9x9v3sFVG89...4XUwZ. Confirm to proceed.  
+User: Yes.  
+Alexa: Transaction sent successfully. The tokens will arrive shortly.
+```
 
 ---
 
-## Troubleshooting
+## ⚙️ AI-Driven Vehicle & Token Management
 
-* Ensure your Tesla credentials and client secrets are correct.
-* Make sure AWS Lambda has internet access to reach Tesla's API.
-* Confirm that Alexa Skill and Lambda function APP\_IDs match.
-* Verify the Node.js runtime version compatibility.
+* AI-powered logistics and energy forecasting using Pyth price feeds
+* Automated staking reward optimizations
+* Real-time anomaly detection and alerts for Tesla vehicle parameters
+* Smart scheduling of transactions and APRS-IS updates
 
 ---
 
-## License
+## 📄 License
 
 MIT License
 
 ---
-
-## Acknowledgments
-
-* Tesla JSON API documentation
-* AWS Lambda and Alexa Skills Kit documentation
