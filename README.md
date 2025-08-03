@@ -5,6 +5,7 @@ NEXUS allows you to control your Tesla using Alexa voice commands by leveraging 
 ---
 
 ## Features
+
 - Lock/unlock your Tesla
 - Start/stop your Tesla
 - Query vehicle status
@@ -14,10 +15,10 @@ NEXUS allows you to control your Tesla using Alexa voice commands by leveraging 
 
 ## Prerequisites
 
-- **Node.js** (version 20 or higher recommended)
-- **AWS Account**
-- **Amazon Developer Account**
-- **AWS CLI** installed and configured on your local machine
+- Node.js (version 20 or higher recommended)
+- AWS Account
+- Amazon Developer Account
+- AWS CLI installed and configured on your local machine
 
 ---
 
@@ -25,7 +26,7 @@ NEXUS allows you to control your Tesla using Alexa voice commands by leveraging 
 
 ### 1. Download and Install Dependencies
 
-- Download the latest release from the [Releases](https://github.com/your-repo/nexus-ai/releases) page.
+- Download the latest release from the Releases page.
 - Unzip the archive to your preferred location.
 - Open a terminal in that folder and run:
 
@@ -36,17 +37,17 @@ npm install
 ### 2. Create AWS Lambda Function
 
 * Log into the [AWS Lambda Console](https://console.aws.amazon.com/lambda/).
-* Create a new Lambda function:
+* Create a new Lambda function with:
 
   * Blueprint: **Blank Function**
   * Trigger: **Alexa Skills Kit**
   * Name: `TeslaControl`
-  * Runtime: **Node 4.3** (verify if newer runtimes are supported)
+  * Runtime: Node 4.3 (check for newer supported runtimes, ideally Node 20+)
 * Leave the default code in place for now.
 
 ### 3. Configure Environment Variables for Lambda
 
-Set the following environment variables in your Lambda function:
+In your Lambda function settings, add these environment variables:
 
 | Variable              | Description                 |
 | --------------------- | --------------------------- |
@@ -73,36 +74,36 @@ Set the following environment variables in your Lambda function:
 ### 5. Create Alexa Skill
 
 * Go to the [Amazon Developer Console](https://developer.amazon.com/alexa/console/ask).
-* Create a new skill with:
+* Create a new skill:
 
-  * **Custom Interaction Model**
+  * Skill type: **Custom Interaction Model**
   * Invocation name: `"my car"` (recommended) or `"my Tesla"`
 * In the Interaction Model:
 
-  * Copy `intents.json` into the Intent Schema.
-  * Copy `utterances.txt` into Sample Utterances.
-  * Create two custom slot types:
+  * Copy `intents.json` into the **Intent Schema**.
+  * Copy `utterances.txt` into **Sample Utterances**.
+* Create two custom slot types:
 
-    * `LOCK_UNLOCK` with values: `lock`, `unlock`
-    * `START_STOP` with values: `start`, `stop`
+  * `LOCK_UNLOCK` with values: `lock`, `unlock`
+  * `START_STOP` with values: `start`, `stop`
 
 ### 6. Connect Alexa Skill to Lambda
 
-* On the Configuration tab:
+* On the Alexa skill Configuration tab:
 
   * Choose **AWS Lambda ARN** as the Service Endpoint Type.
   * Region: **North America**
   * Enter your Lambda ARN.
-
-* Enable testing in the Test tab.
-
+* Enable testing in the **Test** tab.
 * Copy the Skill ID (starts with `amzn1.ask.skill.`).
 
-### 7. Add `APP_ID` to Lambda Environment Variables
+### 7. Add APP\_ID to Lambda Environment Variables
 
-Add the following environment variable to your Lambda function:
+* Add the following environment variable to your Lambda function:
 
-* `APP_ID` = *Your Alexa Skill ID*
+```
+APP_ID = Your Alexa Skill ID
+```
 
 ### 8. Deploy Lambda Function Code
 
@@ -125,20 +126,22 @@ Once deployed and connected, test your Alexa skill with commands like:
 
 ---
 
-## Contributing
+## Troubleshooting
 
-PRs to automate setup and improve functionality are welcome!
+* Ensure your Tesla credentials and client secrets are correct.
+* Make sure AWS Lambda has internet access to reach Tesla's API.
+* Confirm that Alexa Skill and Lambda function APP\_IDs match.
+* Verify the Node.js runtime version compatibility.
 
 ---
 
 ## License
 
-[MIT](LICENSE)
+MIT License
 
 ---
 
-## Acknowledgements
+## Acknowledgments
 
-* Tesla JSON API
-* AWS Lambda
-* Amazon Alexa Skills Kit
+* Tesla JSON API documentation
+* AWS Lambda and Alexa Skills Kit documentation
